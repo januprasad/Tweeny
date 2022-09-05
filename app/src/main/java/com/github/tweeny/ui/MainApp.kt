@@ -19,10 +19,10 @@ import com.github.tweeny.uiState.ApiState
 import com.github.tweeny.viewmodel.MainViewModel
 
 @Composable
-fun MainApp() {
-    val viewModel = viewModel(modelClass = MainViewModel::class.java)
-    val state = viewModel._postStateFlow.collectAsState().value
-    viewModel.reset()
+fun MainApp(
+    viewModel: MainViewModel = viewModel(modelClass = MainViewModel::class.java)
+) {
+    val state = viewModel.postStateFlow.collectAsState().value
     Surface(modifier = Modifier.fillMaxSize()) {
         when (state) {
             is ApiState.Failure -> {

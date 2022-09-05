@@ -23,10 +23,6 @@ constructor(private val mainRepository: MainRepository) : ViewModel() {
         getPost()
     }
 
-    public fun reset() {
-        _postStateFlow.value = ApiState.Loading
-    }
-
     private fun getPost() = viewModelScope.launch {
         _postStateFlow.value = ApiState.Loading
         mainRepository.getPost()
