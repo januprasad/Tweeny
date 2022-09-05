@@ -22,6 +22,7 @@ import com.github.tweeny.viewmodel.MainViewModel
 fun MainApp() {
     val viewModel = viewModel(modelClass = MainViewModel::class.java)
     val state = viewModel._postStateFlow.collectAsState().value
+    viewModel.reset()
     Surface(modifier = Modifier.fillMaxSize()) {
         when (state) {
             is ApiState.Failure -> {

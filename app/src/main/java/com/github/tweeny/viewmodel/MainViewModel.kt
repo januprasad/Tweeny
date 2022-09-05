@@ -16,21 +16,24 @@ class MainViewModel
 @Inject
 constructor(private val mainRepository: MainRepository) : ViewModel() {
 
-    private val postStateFlow: MutableStateFlow<ApiState> = MutableStateFlow(ApiState.Empty)
-
-    val _postStateFlow: StateFlow<ApiState> = postStateFlow
+    private val _postStateFlow: MutableStateFlow<ApiState> = MutableStateFlow(ApiState.Empty)
+    val postStateFlow: StateFlow<ApiState> = _postStateFlow
 
     init {
         getPost()
     }
 
+    public fun reset() {
+        _postStateFlow.value = ApiState.Loading
+    }
+
     private fun getPost() = viewModelScope.launch {
-        postStateFlow.value = ApiState.Loading
+        _postStateFlow.value = ApiState.Loading
         mainRepository.getPost()
             .catch { e ->
-                postStateFlow.value = ApiState.Failure(e)
+                _postStateFlow.value = ApiState.Failure(e)
             }.collect { data ->
-                postStateFlow.value = ApiState.Success(data)
+                _postStateFlow.value = ApiState.Success(data)
             }
     }
 }
